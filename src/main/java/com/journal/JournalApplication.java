@@ -1,13 +1,13 @@
-package com.edigest;
+package com.journal;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EDigestProjectApplication {
+public class JournalApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(EDigestProjectApplication.class, args);
+        SpringApplication.run(JournalApplication.class, args);
     }
 
 }
