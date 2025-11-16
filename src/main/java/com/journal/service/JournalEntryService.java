@@ -7,6 +7,7 @@ import com.journal.repo.UserRepo;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,13 +22,20 @@ public class JournalEntryService {
     @Autowired
     private UserRepo userRepo;
 
+    @Transactional
     public JournalEntry save(JournalEntry journalEntry, String userName) {
-        User user = userRepo.findByUsername(userName);
-        journalEntry.setDate(LocalDateTime.now());
-        JournalEntry journalEntry1 = journalEntryRepo.save(journalEntry);
-        user.getJournalEntries().add(journalEntry1);
-        userRepo.save(user);
-        return journalEntry1;
+
+        try {
+            User user = userRepo.findByUsername(userName);
+            journalEntry.setDate(LocalDateTime.now());
+            JournalEntry journalEntry1 = journalEntryRepo.save(journalEntry);
+            user.getJournalEntries().add(journalEntry1);
+            userRepo.save(user);
+            return journalEntry1;
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Something Not working while saving the data "+e);
+        }
     }
     public JournalEntry save(JournalEntry journalEntry) {
 
