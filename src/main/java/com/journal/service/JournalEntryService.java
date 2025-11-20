@@ -22,6 +22,9 @@ public class JournalEntryService {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private UserService userService;
+
     @Transactional
     public JournalEntry save(JournalEntry journalEntry, String userName) {
 
@@ -51,9 +54,13 @@ public class JournalEntryService {
         return journalEntryRepo.findById(id);
     }
 
+    @Transactional
     public void delete(ObjectId id, String userName) {
         User user = userRepo.findByUsername(userName);
-        user.getJournalEntries().remove(journalEntryRepo.findById(id).get());
-        journalEntryRepo.deleteById(id);
+        boolean value = user.getJournalEntries().remove(journalEntryRepo.findById(id).get());
+        if (value) {
+            userService.saveUser(user);
+            journalEntryRepo.deleteById(id);
+        }
     }
 }

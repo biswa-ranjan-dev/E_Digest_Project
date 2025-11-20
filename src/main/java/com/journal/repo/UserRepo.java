@@ -9,4 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface UserRepo extends MongoRepository<User, ObjectId> {
 
     public User findByUsername(String username);
+
+    public void deleteByUsername(String username);
 }
